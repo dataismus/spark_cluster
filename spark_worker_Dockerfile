@@ -1,5 +1,5 @@
 FROM dataismus/spark_node:latest
-COPY start-worker.sh /
+COPY spark_worker/start-worker.sh /
 # run it with:
 # docker run --rm -d --name spark-worker1 --hostname spark-worker1 --network spark_cluster dataismus/spark_worker
 

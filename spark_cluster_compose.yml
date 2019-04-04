@@ -2,6 +2,9 @@ version: "3"
 services:
   spark-master:
     image: dataismus/spark_master:latest
+    build:
+      dockerfile: /Users/dimitris/work/dataismus/spark_cluster/spark_master_Dockerfile
+      context: /Users/dimitris/work/dataismus/spark_cluster/spark_master/
     container_name: spark-master
     hostname: spark-master
     ports:
@@ -10,7 +13,7 @@ services:
     networks:
       - spark_cluster
     env_file:
-      - cluster-env.env
+      - ./cluster-env.env
     # environment:
     #   - SPARK_LOCAL_IP=spark-master
     #   - SPARK_MASTER_PORT=7077
@@ -18,6 +21,9 @@ services:
     command: spark-class org.apache.spark.deploy.master.Master --ip $SPARK_LOCAL_IP --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT
   spark-worker:
     image: dataismus/spark_worker:latest
+    build:
+      dockerfile: /Users/dimitris/work/dataismus/spark_cluster/spark_worker_Dockerfile
+      context: /Users/dimitris/work/dataismus/spark_cluster/spark_worker/
     depends_on:
       - spark-master
     ports:
@@ -25,7 +31,7 @@ services:
     networks:
       - spark_cluster
     env_file:
-      - cluster-env.env
+      - ./cluster-env.env
     # environment:
     #   - SPARK_LOCAL_IP=spark-master
     #   - SPARK_MASTER_PORT=7077
