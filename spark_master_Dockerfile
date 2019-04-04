@@ -1,0 +1,6 @@
+FROM dataismus/spark_node:latest
+
+# run it with:
+# docker run --rm -d --name spark-master --hostname spark-master --network spark_cluster -p 7077:7077 -p 8080:8080 dataismus/spark_master
+# start it with:
+CMD spark-class org.apache.spark.deploy.master.Master --ip `hostname` --port 7077 --webui-port 8080

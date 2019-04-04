@@ -1,0 +1,6 @@
+FROM dataismus/spark_node:latest
+
+# run it with:
+# docker run --rm -d --name spark-worker1 --hostname spark-worker1 --network spark_cluster dataismus/spark_worker
+# start it with:
+CMD spark-class org.apache.spark.deploy.worker.Worker --webui-port 8080 spark://spark-master:7077
