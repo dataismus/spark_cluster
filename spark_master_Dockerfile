@@ -1,4 +1,4 @@
-FROM dataismus/spark_node:latest
+FROM dataismus/spark_node:autobuilt
 COPY spark_master/start-master.sh /
 # run it with:
 # docker run --rm -d --name spark-master --hostname spark-master --network spark_cluster -p 7077:7077 -p 8080:8080 dataismus/spark_master
