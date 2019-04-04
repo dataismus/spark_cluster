@@ -1,0 +1,39 @@
+version: "3"
+services:
+  spark-master:
+    image: dataismus/spark_master:latest
+    container_name: spark-master
+    hostname: spark-master
+    ports:
+      - 8080:8080
+      - 7077:7077
+    networks:
+      - spark_cluster
+    env_file:
+      - cluster-env.env
+    # environment:
+    #   - SPARK_LOCAL_IP=spark-master
+    #   - SPARK_MASTER_PORT=7077
+    #   - SPARK_MASTER_WEBUI_PORT=8080
+    command: spark-class org.apache.spark.deploy.master.Master --ip $SPARK_LOCAL_IP --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT
+  spark-worker:
+    image: dataismus/spark_worker:latest
+    depends_on:
+      - spark-master
+    ports:
+      - 8080
+    networks:
+      - spark_cluster
+    env_file:
+      - cluster-env.env
+    # environment:
+    #   - SPARK_LOCAL_IP=spark-master
+    #   - SPARK_MASTER_PORT=7077
+    #   - SPARK_MASTER=spark://${SPARK_LOCAL_IP}:${SPARK_MASTER_PORT}
+    #   - SPARK_WORKER_WEBUI_PORT=8080
+    command: spark-class org.apache.spark.deploy.worker.Worker --webui-port $SPARK_WORKER_WEBUI_PORT $SPARK_MASTER
+networks:
+  spark_cluster:
+    driver: bridge
+    ipam:
+      driver: default

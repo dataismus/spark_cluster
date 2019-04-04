@@ -18,10 +18,8 @@ ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openj
 ENV JAVA_VERSION 8u201
 ENV JAVA_ALPINE_VERSION 8.201.08-r1
 RUN set -x \
-	&& apk add --no-cache \
-		openjdk8-jre="$JAVA_ALPINE_VERSION" \
+	&& apk add --no-cache openjdk8-jre="$JAVA_ALPINE_VERSION" \
 	&& [ "$JAVA_HOME" = "$(docker-java-home)" ]
-
 
 # ----------------------------- Spark setup -------------------------------
 # Spark versioning:
@@ -31,7 +29,6 @@ ENV HADOOP_VERSION=2.7
 
 RUN apk add --no-cache --virtual=.build-dependencies wget ca-certificates && \
     apk add --no-cache bash curl jq
-
 RUN wget --no-verbose http://apache.mirror.iphh.net/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
     && tar -xvzf spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
     && mv spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} spark \
@@ -51,5 +48,5 @@ CMD /bin/sh
 # run it with (as Spark driver):
 # docker run --rm -it --name spark-driver --network spark_cluster dataismus/spark_node
 
-# start it with:
-# docker run --rm -it --name spark-driver --network spark_cluster dataismus/spark_node
+# submit an application to the cluster with:
+# spark-submit --master spark://spark-master:7077 --class org.apache.spark.examples.SparkPi /spark/examples/jars/spark-examples_2.11-2.4.0.jar 1000
