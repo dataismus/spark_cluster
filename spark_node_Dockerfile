@@ -42,12 +42,34 @@ ENV SPARK_OPTS --driver-java-options=-Xms1024M --driver-java-options=-Xmx4096M -
 ENV PATH=$SPARK_HOME/bin:$PATH
 ENV PYSPARK_PYTHON=python3
 
-EXPOSE 8080 8081 8082 7077 6066
-CMD /bin/sh
-
-
+######### DRIVER SETUP ######### 
 # run it with (as Spark driver):
 # docker run --rm -it --name spark-driver --network spark_cluster dataismus/spark_node
 
 # submit an application to the cluster with:
 # spark-submit --master spark://spark-master:7077 --class org.apache.spark.examples.SparkPi /spark/examples/jars/spark-examples_2.11-2.4.0.jar 1000
+
+
+######### WORKER SETUP ######### 
+COPY spark_worker/start-worker.sh /
+# run it with:
+# docker run --rm -d --name spark-worker --hostname spark-worker --network spark_cluster dataismus/spark_node
+# start it with:
+# CMD spark-class org.apache.spark.deploy.worker.Worker --webui-port $SPARK_WORKER_WEBUI_PORT $SPARK_MASTER
+# or, equivalently, by default:
+# CMD spark-class org.apache.spark.deploy.worker.Worker --webui-port 8081 spark://spark-master:7077
+
+
+######### MASTER SETUP ######### 
+COPY spark_master/start-master.sh /
+# run it with:
+# docker run --rm -d --name spark-master --hostname spark-master --network spark_cluster -p 7077:7077 -p 8080:8080 dataismus/spark_node
+
+# start it with:
+# CMD spark-class org.apache.spark.deploy.master.Master --ip $SPARK_LOCAL_IP --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT
+# or, equivalently, by default:
+# CMD spark-class org.apache.spark.deploy.master.Master --ip `hostname` --port 7077 --webui-port 8080
+
+
+EXPOSE 8080 8081 8082 7077 6066
+CMD /bin/sh
