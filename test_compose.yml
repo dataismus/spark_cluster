@@ -1,10 +1,10 @@
-version: "3"
+version: "3.3"
 services:
   spark-master:
     image: dataismus/spark_master:latest
     build:
-      dockerfile: /Users/dimitris/work/dataismus/spark_cluster/spark_master_Dockerfile
-      context: /Users/dimitris/work/dataismus/spark_cluster/spark_master/
+      dockerfile: ./spark_master_Dockerfile
+      context: .
     container_name: spark-master
     hostname: spark-master
     ports:
@@ -18,17 +18,19 @@ services:
       - SPARK_LOCAL_IP=spark-master
       - SPARK_MASTER_PORT=7077
       - SPARK_MASTER_WEBUI_PORT=8080
+      - SPARK_MASTER_LOG=/spark/logs
     # command: spark-class org.apache.spark.deploy.master.Master --ip $SPARK_LOCAL_IP --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT
-    command: spark-class org.apache.spark.deploy.master.Master --ip `hostname` --port 7077 --webui-port 8080
+    # command: spark-class org.apache.spark.deploy.master.Master --ip `hostname` --port 7077 --webui-port 8080
+    # command: "/start-master.sh"
   spark-worker:
     image: dataismus/spark_worker:latest
     build:
-      dockerfile: /Users/dimitris/work/dataismus/spark_cluster/spark_worker_Dockerfile
-      context: /Users/dimitris/work/dataismus/spark_cluster/spark_worker/
+      dockerfile: ./spark_worker_Dockerfile
+      context: .
     depends_on:
       - spark-master
     ports:
-      - 8080
+      - 8081:8081
     networks:
       - spark_cluster
     # env_file:
@@ -37,9 +39,11 @@ services:
       - SPARK_LOCAL_IP=spark-master
       - SPARK_MASTER_PORT=7077
       - SPARK_MASTER=spark://SPARK_LOCAL_IP:SPARK_MASTER_PORT
-      - SPARK_WORKER_WEBUI_PORT=8080
+      - SPARK_WORKER_WEBUI_PORT=8081
+      - SPARK_WORKER_LOG=/spark/logs
+    # command: "/start-worker.sh"
     # command: spark-class org.apache.spark.deploy.worker.Worker --webui-port $SPARK_WORKER_WEBUI_PORT $SPARK_MASTER
-    command: spark-class org.apache.spark.deploy.worker.Worker --webui-port 8080 spark://spark-master:7077
+    # command: spark-class org.apache.spark.deploy.worker.Worker --webui-port 8081 spark://spark-master:7077
 networks:  
   spark_cluster:
     driver: bridge

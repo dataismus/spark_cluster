@@ -4,6 +4,6 @@ COPY spark_worker/start-worker.sh /
 # docker run --rm -d --name spark-worker1 --hostname spark-worker1 --network spark_cluster dataismus/spark_worker
 
 # start it with:
-# CMD spark-class org.apache.spark.deploy.worker.Worker --webui-port $SPARK_WORKER_WEBUI_PORT $SPARK_MASTER
+CMD spark-class org.apache.spark.deploy.worker.Worker --webui-port $SPARK_WORKER_WEBUI_PORT $SPARK_MASTER
 # or, equivalently, by default:
-CMD spark-class org.apache.spark.deploy.worker.Worker --webui-port 8081 spark://spark-master:7077
+# CMD spark-class org.apache.spark.deploy.worker.Worker --webui-port 8080 spark://spark-master:7077

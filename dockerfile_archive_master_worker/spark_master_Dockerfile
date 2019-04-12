@@ -4,6 +4,6 @@ COPY spark_master/start-master.sh /
 # docker run --rm -d --name spark-master --hostname spark-master --network spark_cluster -p 7077:7077 -p 8080:8080 dataismus/spark_master
 
 # start it with:
-# CMD spark-class org.apache.spark.deploy.master.Master --ip $SPARK_LOCAL_IP --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT
+CMD spark-class org.apache.spark.deploy.master.Master --ip $SPARK_LOCAL_IP --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT
 # or, equivalently, by default:
-CMD spark-class org.apache.spark.deploy.master.Master --ip `hostname` --port 7077 --webui-port 8080
+# CMD spark-class org.apache.spark.deploy.master.Master --ip `hostname` --port 7077 --webui-port 8080
