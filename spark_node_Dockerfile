@@ -71,5 +71,5 @@ COPY spark_master/start-master.sh /
 # CMD spark-class org.apache.spark.deploy.master.Master --ip `hostname` --port 7077 --webui-port 8080
 
 
-EXPOSE 8080 8081 8082 8083 8084 8085 7077 6066
+EXPOSE 8080 8081 7077 6066
 CMD /bin/sh
