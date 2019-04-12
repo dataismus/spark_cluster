@@ -53,17 +53,17 @@ ENV PYSPARK_PYTHON=python3
 ######### WORKER SETUP ######### 
 COPY spark_worker/start-worker.sh /
 # run it with:
-# docker run --rm -d --name spark-worker --hostname spark-worker --network spark_cluster dataismus/spark_node
+# docker run --rm -it --name spark-worker --hostname spark-worker --network spark_cluster -p 8081:8081 dataismus/spark_node
 # start it with:
 # CMD spark-class org.apache.spark.deploy.worker.Worker --webui-port $SPARK_WORKER_WEBUI_PORT $SPARK_MASTER
 # or, equivalently, by default:
-# CMD spark-class org.apache.spark.deploy.worker.Worker --webui-port 8081 spark://spark-master:7077
+# CMD spark-class org.apache.spark.deploy.worker.Worker --webui-port 8081 spark://spark-master:7077 --webui-port 8081
 
 
 ######### MASTER SETUP ######### 
 COPY spark_master/start-master.sh /
 # run it with:
-# docker run --rm -d --name spark-master --hostname spark-master --network spark_cluster -p 7077:7077 -p 8080:8080 dataismus/spark_node
+# docker run --rm -it --name spark-master --hostname spark-master --network spark_cluster -p 7077:7077 -p 8080:8080 dataismus/spark_node
 
 # start it with:
 # CMD spark-class org.apache.spark.deploy.master.Master --ip $SPARK_LOCAL_IP --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT
@@ -71,5 +71,5 @@ COPY spark_master/start-master.sh /
 # CMD spark-class org.apache.spark.deploy.master.Master --ip `hostname` --port 7077 --webui-port 8080
 
 
-EXPOSE 8080 8081 8082 7077 6066
+EXPOSE 8080 8081 8082 8083 8084 8085 7077 6066
 CMD /bin/sh
