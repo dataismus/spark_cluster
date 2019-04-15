@@ -72,4 +72,4 @@ COPY spark_master/start-master.sh /
 
 
 EXPOSE 8080 8081 7077 6066
-CMD /bin/sh
+CMD /bin/sh 

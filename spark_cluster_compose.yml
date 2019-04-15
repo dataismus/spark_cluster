@@ -14,7 +14,7 @@ services:
       - 7077:7077
     networks:
       - spark_cluster
-    # env_file:
+    # env_file: 
     #   - ./cluster-env.env
     environment:
       - SPARK_LOCAL_IP=spark-master
