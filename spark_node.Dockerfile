@@ -15,11 +15,12 @@ ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk/jre
 ENV PATH $PATH:${JAVA_HOME}/bin:/usr/lib/jvm/java-1.8-openjdk/bin
 
 # Java versioning:
-ENV JAVA_VERSION 8u201
-ENV JAVA_ALPINE_VERSION 8.201.08-r1
+ENV JAVA_VERSION 8u212
+ENV JAVA_ALPINE_VERSION 8.212.04-r0
 RUN set -x \
 	&& apk add --no-cache openjdk8-jre="$JAVA_ALPINE_VERSION" \
 	&& [ "$JAVA_HOME" = "$(docker-java-home)" ]
+
 
 # ----------------------------- Spark setup -------------------------------
 # Spark versioning:
